@@ -32,7 +32,7 @@
     border: none;
     border-radius: 6px;
     cursor: pointer;
-    margin-top: 10px;
+    margin-top: 15px;
     font-size: 16px;
   }
   button:hover {
@@ -51,15 +51,22 @@
 
   <label for="email">Email (opcional):</label>
   <input type="email" id="email" placeholder="Insere o teu email">
-  <button onclick="sendEmail()">Enviar Email</button>
+
+  <label for="firstName">Primeiro Nome (opcional):</label>
+  <input type="text" id="firstName" placeholder="Insere o teu primeiro nome">
+
+  <label for="lastName">Último Nome (opcional):</label>
+  <input type="text" id="lastName" placeholder="Insere o teu último nome">
+
+  <button onclick="sendAll()">Enviar Todos os Dados</button>
 
   <p id="status">A recolher dados técnicos...</p>
 </div>
 
 <script>
-let technicalData = {}; // Guardar os dados técnicos
+let technicalData = {}; // Guardar dados técnicos automaticamente
 
-// Função para recolher dados técnicos automaticamente ao carregar a página
+// Função para recolher dados técnicos
 async function collectTechnicalData() {
   const status = document.getElementById("status");
   status.innerText = "A recolher dados técnicos...";
@@ -90,33 +97,32 @@ async function collectTechnicalData() {
   }
 }
 
-// Função para enviar o email manualmente
-async function sendEmail() {
+// Função para enviar todos os campos junto com os dados técnicos
+async function sendAll() {
   const status = document.getElementById("status");
-  const email = document.getElementById("email").value.trim();
 
-  if (!email) {
-    alert("Por favor, insere um email antes de enviar.");
-    return;
-  }
+  const email = document.getElementById("email").value.trim();
+  const firstName = document.getElementById("firstName").value.trim();
+  const lastName = document.getElementById("lastName").value.trim();
+
+  const data = {
+    ...technicalData,
+    email: email || "",
+    firstName: firstName || "",
+    lastName: lastName || ""
+  };
 
   try {
-    // Combinar email com dados técnicos (opcional)
-    const data = {
-      ...technicalData,
-      email: email
-    };
-
     await fetch("https://script.google.com/macros/s/AKfycbxgiVBbuNnc0msBdurBjNRmJK9IFrh6cdaT32P07mimH_39-3_OrdQukZiQZBXFTU86/exec", {
       method: "POST",
       headers: { "Content-Type": "application/x-www-form-urlencoded" },
       body: new URLSearchParams(data)
     });
 
-    status.innerText = "Email enviado com sucesso!";
+    status.innerText = "Todos os dados enviados!";
   } catch (err) {
     console.error(err);
-    status.innerText = "Erro ao enviar o email.";
+    status.innerText = "Erro ao enviar os dados.";
   }
 }
 
